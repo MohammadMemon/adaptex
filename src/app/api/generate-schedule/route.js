@@ -44,6 +44,7 @@ Your tasks:
    - "revisionTip": A single concise sentence for last-minute revision — the most critical thing to remember about this topic.
 
 CRITICAL SCHEDULING RULES:
+- EXHAUSTIVE EXTRACTION: You must extract EVERY SINGLE TOPIC present in the raw syllabus text. Do not omit, summarize, or skip any topics. The total number of topics in your JSON must match the total number of topics in the raw syllabus.
 - NEVER combine or merge multiple topics into one. Every topic from the syllabus must appear as its own separate entry.
 - If there are more topics than days, assign multiple separate topics to the same day — but keep each one as its own distinct object with its own scheduledDay.
 - If there are fewer topics than days, spread them out so some days have just one topic.
@@ -114,7 +115,15 @@ IMPORTANT RULES:
     const responseText = result.response.text();
 
     // Strip markdown fences if present
-    const cleanJson = responseText.replace(/```json\n?|```/g, "").trim();
+    let cleanJson = responseText.replace(/```json\n?|```/g, "").trim();
+    
+    // Extract just the JSON object to avoid trailing/leading garbage text
+    const firstBrace = cleanJson.indexOf('{');
+    const lastBrace = cleanJson.lastIndexOf('}');
+    if (firstBrace !== -1 && lastBrace !== -1) {
+      cleanJson = cleanJson.substring(firstBrace, lastBrace + 1);
+    }
+    
     const parsedData = JSON.parse(cleanJson);
 
     return NextResponse.json(parsedData);
