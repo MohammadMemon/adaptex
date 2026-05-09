@@ -1,36 +1,76 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Adaptex - Structured Study Tracker
+
+Adaptex is a full-stack study tracking platform built to help students optimize their exam preparation through structured and continuous learning. By simply uploading a syllabus and Previous Year Questions (PYQs), Adaptex automatically structures the topics, maps the relevant PYQs, and generates a personalized day-wise study schedule.
+
+## Core Features
+
+*   **Automated Syllabus Extraction:** Upload your syllabus and PYQs (PDF format). The application uses client-side OCR (Tesseract) to extract text, and the Google Gemini API to intelligently structure your units, topics, and weightage into a clean JSON format without manual data entry.
+*   **Smart Day-Wise Scheduling:** Input the number of days until your exam, and Adaptex will distribute your topics logically based on unit weightage, creating an actionable and structured daily plan.
+*   **Interactive Daily Tracker:** A focused, distraction-free interface to track your daily progress. Includes targeted "Focus Points" and "Revision Tips" generated during the data structuring phase for every topic. Mark topics as Done, Weak, or Skipped to maintain continuous learning.
+*   **Revision Center:** Easily catch up on topics you marked as Weak or Skipped to ensure no gaps in your preparation.
+*   **Mobile-First UI:** Built with a clean, neutral, and responsive aesthetic. Includes a bottom navigation bar for mobile users and smooth physics-based animations.
+
+## Technology Stack
+
+*   **Framework:** Next.js 14+ (App Router)
+*   **Styling:** Tailwind CSS & custom CSS variables for a neutral, cool-gray aesthetic.
+*   **Animations:** Framer Motion
+*   **Database & Auth:** Supabase (PostgreSQL with Row Level Security & Google OAuth)
+*   **Processing Engine:** Tesseract.js (Client-side OCR) & Google Generative API (Data Structuring)
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+*   Node.js 18.x or later
+*   A Supabase Project
+*   A Google Generative API Key
 
+### 1. Clone the repository
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/MohammadMemon/adaptex.git
+cd adaptex
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Install Dependencies
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### 3. Environment Variables
+Create a `.env.local` file in the root of your project and add the following keys:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```env
+# Supabase Configuration
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 
-## Learn More
+# Processing API
+GOOGLE_GENERATIVE_AI_API_KEY=your_api_key
+```
 
-To learn more about Next.js, take a look at the following resources:
+### 4. Database Setup (Supabase)
+Ensure your Supabase project has the correct tables set up. You will need:
+1.  `subjects`
+2.  `units`
+3.  `topics`
+4.  `pyqs`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Row Level Security (RLS) should be enabled on all tables so users can only access their own data via `user_id`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 5. Run the Development Server
+```bash
+npm run dev
+```
+Open http://localhost:3000 with your browser to see the result.
 
-## Deploy on Vercel
+## Deployment
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+This project is optimized for deployment on Vercel. 
+1. Push your code to GitHub.
+2. Import the project into Vercel.
+3. Add your environment variables in the Vercel dashboard.
+4. Deploy!
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Contributing
+
+Contributions are welcome. Feel free to open an issue or submit a Pull Request.
